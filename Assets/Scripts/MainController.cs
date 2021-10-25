@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,9 +9,12 @@ public class MainController : MonoBehaviour {
 	public TextMeshProUGUI pseudocode;
 	public TextMeshProUGUI code;
 	public ForestVisualizer forestVisualizer;
+	public CodeSteps codeSteps;
 
 	public int pseudocodeState = -1;
 	public int codeState = -1;
+
+	public Func<int> kruskalStep;
 
 	private string highlightStart = "<mark=#00aeaf33>";
 	//private string highlightStart = "<mark=#0000ff33>"; // pure blue?
@@ -21,6 +25,7 @@ public class MainController : MonoBehaviour {
 		forestVisualizer.AddTree(new List<int> { 4, 5, 6 });
 		forestVisualizer.JoinTrees(new List<int> { 0, 1, 2, 3 }, new List<int> { 4, 5, 6 });
 		forestVisualizer.RemoveTree(new List<int> { 4, 5, 6 });
+		kruskalStep = codeSteps.Initialise;
 	}
 
 	void setPseduocodeHighlight() {
@@ -52,6 +57,7 @@ public class MainController : MonoBehaviour {
 	}
 
 	public void Step() {
+		kruskalStep();
 		pseudocodeState++;
 		setPseduocodeHighlight();
 		codeState++;
