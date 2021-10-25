@@ -11,7 +11,7 @@ public class CodeSteps : MonoBehaviour {
 	public Func<int> next;
 
 	// Code states (line numbers)
-	enum state {
+	public enum state {
 		function,
 		initForest,
 		initQueue,

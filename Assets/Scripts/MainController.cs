@@ -10,6 +10,7 @@ public class MainController : MonoBehaviour {
 	public CodeSteps steps;
 
 	int pseudocodeState = 0;
+	int prevPseudocodeState = -1;
 	int codeState = 0;
 	int prevState = -1;
 
@@ -30,12 +31,11 @@ public class MainController : MonoBehaviour {
 		if (pseudocodeState == text.Length) {
 			pseudocodeState--;
 		}
-		int tabs = 0;
-		if (pseudocodeState > 0) {
-			text[pseudocodeState - 1] = text[pseudocodeState - 1].Replace(highlightStart, "");
-			text[pseudocodeState - 1] = text[pseudocodeState - 1].Replace(highlightEnd, "");
-			tabs = text[pseudocodeState].Split('\t').Length - 1;
+		if (prevPseudocodeState >= 0) {
+			text[prevPseudocodeState] = text[prevPseudocodeState].Replace(highlightStart, "");
+			text[prevPseudocodeState] = text[prevPseudocodeState].Replace(highlightEnd, "");
 		}
+		int tabs = text[pseudocodeState].Split('\t').Length - 1;
 		text[pseudocodeState] = new string('\t', tabs) + highlightStart + text[pseudocodeState].Trim() + highlightEnd;
 		pseudocode.text = string.Join("\n", text);
 	}
@@ -57,7 +57,8 @@ public class MainController : MonoBehaviour {
 	public void Step() {
 		prevState = codeState;
 		codeState = steps.next();
-		pseudocodeState++;
+		prevPseudocodeState = pseudocodeState;
+		pseudocodeState = PseudocodeSteps.ProcessState(codeState);
 		setPseduocodeHighlight();
 		setCodeHighlight();
 	}
