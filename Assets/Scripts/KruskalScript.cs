@@ -16,8 +16,7 @@ public class KruskalScript {
 			Edge edge = queue.Peek();
 			List<int> tree1 = null;
 			List<int> tree2 = null;
-			for (int i = 0; i < forest.Count; i++) {
-				List<int> tree = forest[i];
+			foreach (List<int> tree in forest) {
 				if (tree.Contains(edge.source) && !tree.Contains(edge.destination))
 					tree1 = tree;
 				if (!tree.Contains(edge.source) && tree.Contains(edge.destination))
