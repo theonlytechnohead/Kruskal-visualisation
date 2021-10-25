@@ -770,8 +770,6 @@ MonoBehaviour:
   pseudocode: {fileID: 1099711248}
   code: {fileID: 824342460}
   steps: {fileID: 519420033}
-  pseudocodeState: 0
-  codeState: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -907,8 +905,7 @@ MonoBehaviour:
     = queue.Peek();\r\n\t\tList<int> tree1 = null;\r\n\t\tList<int> tree2 = null;\r\n\t\tforeach
     (List<int> tree in forest) {\r\n\t\t\tif (tree.Contains(edge.source) && !tree.Contains(edge.destination))\r\n\t\t\t\ttree1
     = tree;\r\n\t\t\tif (!tree.Contains(edge.source) && tree.Contains(edge.destination))\r\n\t\t\t\ttree2
-    = tree;\r\n\t\t\tif (tree.Contains(edge.source) && tree.Contains(edge.destination))
-    {\r\n\t\t\t\tqueue.Dequeue();\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t}\r\n\t\tif
+    = tree;\r\n\t\t\tif (tree.Contains(edge.source) && tree.Contains(edge.destination))\n\t\t\t\tqueue.Dequeue();\r\n\t\t}\r\n\t\tif
     (tree1 != null && tree2 != null) {\r\n\t\t\ttree1.Concat(tree2);\r\n\t\t\tforest.Remove(tree2);\r\n\t\t\tused_edges++;\r\n\t\t\tqueue.Dequeue();\r\n\t\t\tcost
     += 0;\r\n\t\t}\r\n\t}\r\n\treturn cost;\r\n}"
   m_isRightToLeft: 0
@@ -937,7 +934,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25.25
+  m_fontSize: 26.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

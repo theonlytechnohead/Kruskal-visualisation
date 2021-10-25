@@ -11,6 +11,7 @@ public class MainController : MonoBehaviour {
 
 	int pseudocodeState = 0;
 	int codeState = 0;
+	int prevState = -1;
 
 	private string highlightStart = "<mark=#00aeaf33>";
 	//private string highlightStart = "<mark=#0000ff33>"; // pure blue?
@@ -44,21 +45,20 @@ public class MainController : MonoBehaviour {
 		if (codeState == text.Length) {
 			codeState--;
 		}
-		int tabs = 0;
-		if (codeState > 0) {
-			text[codeState - 1] = text[codeState - 1].Replace(highlightStart, "");
-			text[codeState - 1] = text[codeState - 1].Replace(highlightEnd, "");
-			tabs = text[codeState].Split('\t').Length - 1;
+		if (prevState >= 0) {
+			text[prevState] = text[prevState].Replace(highlightStart, "");
+			text[prevState] = text[prevState].Replace(highlightEnd, "");
 		}
+		int tabs = text[codeState].Split('\t').Length - 1;
 		text[codeState] = new string('\t', tabs) + highlightStart + text[codeState].Trim() + highlightEnd;
 		code.text = string.Join("\n", text);
 	}
 
 	public void Step() {
-		steps.next();
+		prevState = codeState;
+		codeState = steps.next();
 		pseudocodeState++;
 		setPseduocodeHighlight();
-		codeState++;
 		setCodeHighlight();
 	}
 

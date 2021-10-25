@@ -10,6 +10,40 @@ public class CodeSteps : MonoBehaviour {
 	// Function pointer for FSM
 	public Func<int> next;
 
+	// Code states (line numbers)
+	enum state {
+		function,
+		initForest,
+		initQueue,
+		edgeForeach,
+		enqueueEdge,
+		endEdgeForeach,
+		initUsedEdges,
+		initCost,
+		doWhile,
+		peekEdge,
+		initTree1,
+		initTree2,
+		doForeach,
+		checkTree1,
+		applyTree1,
+		checkTree2,
+		applyTree2,
+		checkSameTree,
+		applySameTree,
+		endForeach,
+		checkTwoTrees,
+		mergeTrees,
+		removeMergedTree,
+		incrementUsedEdges,
+		popEdge,
+		updateCost,
+		endIf,
+		checkWhile,
+		returnCost,
+		end
+	}
+
 	int order;
 	List<Edge> edges;
 
@@ -26,12 +60,11 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseForest() {
 		forest = Enumerable.Range(0, order).ToList().ConvertAll(x => new List<int> { x });
-		// visualise forest
 		foreach (List<int> tree in forest) {
 			forestVisualizer.AddTree(tree);
 		}
 		next = InitialiseQueue;
-		return 0;
+		return (int)state.initForest;
 	}
 
 	PriorityQueue<Edge> queue;
@@ -39,7 +72,7 @@ public class CodeSteps : MonoBehaviour {
 	public int InitialiseQueue() {
 		queue = new PriorityQueue<Edge>();
 		next = FillQueue;
-		return 0;
+		return (int)state.initQueue;
 	}
 
 	// TODO: unpack this foreach loop into individual steps
@@ -48,7 +81,7 @@ public class CodeSteps : MonoBehaviour {
 			queue.Enqueue(edge);
 		}
 		next = InitialiseUsedEdges;
-		return 0;
+		return (int)state.endEdgeForeach;
 	}
 
 	int used_edges;
@@ -56,7 +89,7 @@ public class CodeSteps : MonoBehaviour {
 	public int InitialiseUsedEdges() {
 		used_edges = 0;
 		next = InitialiseCost;
-		return 0;
+		return (int)state.initUsedEdges;
 	}
 
 	int cost;
@@ -64,12 +97,12 @@ public class CodeSteps : MonoBehaviour {
 	public int InitialiseCost() {
 		cost = 0;
 		next = DoWhile;
-		return 0;
+		return (int)state.initCost;
 	}
 
 	public int DoWhile() {
 		next = PeekEdge;
-		return 0;
+		return (int)state.doWhile;
 	}
 
 	Edge edge;
@@ -77,7 +110,7 @@ public class CodeSteps : MonoBehaviour {
 	public int PeekEdge() {
 		edge = queue.Peek();
 		next = InitialiseTree1;
-		return 0;
+		return (int)state.peekEdge;
 	}
 
 	List<int> tree1;
@@ -85,7 +118,7 @@ public class CodeSteps : MonoBehaviour {
 	public int InitialiseTree1() {
 		tree1 = null;
 		next = InitialiseTree2;
-		return 0;
+		return (int)state.initTree1;
 	}
 
 	List<int> tree2;
@@ -93,15 +126,14 @@ public class CodeSteps : MonoBehaviour {
 	public int InitialiseTree2() {
 		tree2 = null;
 		next = InitialiseForeachLoop;
-		return 0;
+		return (int)state.initTree2;
 	}
 
 	int i;
 
 	public int InitialiseForeachLoop() {
 		i = 0;
-		next = DoForeach;
-		return 0;
+		return DoForeach();
 	}
 
 	List<int> tree;
@@ -109,7 +141,7 @@ public class CodeSteps : MonoBehaviour {
 	public int DoForeach() {
 		tree = forest[i];
 		next = CheckTree1Condition;
-		return 0;
+		return (int)state.doForeach;
 	}
 
 	bool foundTree1 = false;
@@ -120,7 +152,7 @@ public class CodeSteps : MonoBehaviour {
 			next = ApplyTree1;
 		else
 			next = CheckTree2Condition;
-		return 0;
+		return (int)state.checkTree1;
 	}
 
 	public int ApplyTree1() {
@@ -128,7 +160,7 @@ public class CodeSteps : MonoBehaviour {
 			tree1 = tree;
 		}
 		next = CheckTree2Condition;
-		return 0;
+		return (int)state.applyTree1;
 	}
 
 	bool foundTree2 = false;
@@ -139,7 +171,7 @@ public class CodeSteps : MonoBehaviour {
 			next = ApplyTree2;
 		else
 			next = CheckSameStreeCondition;
-		return 0;
+		return (int)state.checkTree2;
 	}
 
 	public int ApplyTree2() {
@@ -147,7 +179,7 @@ public class CodeSteps : MonoBehaviour {
 			tree2 = tree;
 		}
 		next = CheckSameStreeCondition;
-		return 0;
+		return (int)state.applyTree2;
 	}
 
 	bool inSameTree = false;
@@ -158,24 +190,25 @@ public class CodeSteps : MonoBehaviour {
 			next = ApplySameTree;
 		else
 			next = CheckForeach;
-		return 0;
+		return (int)state.checkSameTree;
 	}
 
 	public int ApplySameTree() {
 		if (inSameTree) {
 			queue.Dequeue();
 		}
-		return 0;
+		next = CheckForeach;
+		return (int)state.applySameTree;
 	}
 
 	public int CheckForeach() {
-		if (i < forest.Count) {
+		if (i < forest.Count - 1) {
 			i++;
 			next = DoForeach;
 		} else {
 			next = CheckTwoTreesCondition;
 		}
-		return 0;
+		return (int)state.endForeach;
 	}
 
 	bool gotTwoTrees = false;
@@ -186,44 +219,44 @@ public class CodeSteps : MonoBehaviour {
 			next = JoinTrees;
 		else
 			next = EndIf;
-		return 0;
+		return (int)state.checkTwoTrees;
 	}
 
 	public int JoinTrees() {
-		tree1.AddRange(tree2);
 		forestVisualizer.JoinTrees(tree1, tree2);
+		tree1.AddRange(tree2);
 		next = RemoveTree;
-		return 0;
+		return (int)state.mergeTrees;
 	}
 
 	public int RemoveTree() {
 		forest.Remove(tree2);
 		forestVisualizer.RemoveTree(tree2);
 		next = IncrementUsedEdges;
-		return 0;
+		return (int)state.removeMergedTree;
 	}
 
 	public int IncrementUsedEdges() {
 		used_edges++;
 		next = PopEdge;
-		return 0;
+		return (int)state.incrementUsedEdges;
 	}
 
 	public int PopEdge() {
 		queue.Dequeue();
 		next = UpdateCost;
-		return 0;
+		return (int)state.popEdge;
 	}
 
 	public int UpdateCost() {
 		cost += edge.priority;
 		next = EndIf;
-		return 0;
+		return (int)state.updateCost;
 	}
 
 	public int EndIf() {
 		next = CheckWhile;
-		return 0;
+		return (int)state.endIf;
 	}
 
 	public int CheckWhile() {
@@ -232,17 +265,16 @@ public class CodeSteps : MonoBehaviour {
 		} else {
 			next = ReturnCost;
 		}
-		return 0;
+		return (int)state.checkWhile;
 	}
 
 	public int ReturnCost() {
 		next = End;
-		return 0;
+		return (int)state.returnCost;
 	}
 
 	public int End() {
-		print("Reached end");
-		return 0;
+		return (int)state.end;
 	}
 
 }
