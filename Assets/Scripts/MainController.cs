@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,23 +8,25 @@ public class MainController : MonoBehaviour {
 	public TextMeshProUGUI pseudocode;
 	public TextMeshProUGUI code;
 	public ForestVisualizer forestVisualizer;
-	public CodeSteps codeSteps;
+	public CodeSteps steps;
 
 	public int pseudocodeState = -1;
 	public int codeState = -1;
-
-	public Func<int> kruskalStep;
 
 	private string highlightStart = "<mark=#00aeaf33>";
 	//private string highlightStart = "<mark=#0000ff33>"; // pure blue?
 	private string highlightEnd = "</mark>";
 
 	void Start() {
-		forestVisualizer.AddTree(new List<int> { 0, 1, 2, 3 });
-		forestVisualizer.AddTree(new List<int> { 4, 5, 6 });
-		forestVisualizer.JoinTrees(new List<int> { 0, 1, 2, 3 }, new List<int> { 4, 5, 6 });
-		forestVisualizer.RemoveTree(new List<int> { 4, 5, 6 });
-		kruskalStep = codeSteps.Initialise;
+		//forestVisualizer.AddTree(new List<int> { 0, 1, 2, 3 });
+		//forestVisualizer.AddTree(new List<int> { 4, 5, 6 });
+		//forestVisualizer.JoinTrees(new List<int> { 0, 1, 2, 3 }, new List<int> { 4, 5, 6 });
+		//forestVisualizer.RemoveTree(new List<int> { 4, 5, 6 });
+
+		// actual setup stuff
+		steps.setOrder(4);
+		steps.setEdges(GetDemoEdges());
+		steps.kruskalStep = steps.InitialiseForest;
 	}
 
 	void setPseduocodeHighlight() {
@@ -57,7 +58,7 @@ public class MainController : MonoBehaviour {
 	}
 
 	public void Step() {
-		kruskalStep();
+		steps.kruskalStep();
 		pseudocodeState++;
 		setPseduocodeHighlight();
 		codeState++;
@@ -66,5 +67,23 @@ public class MainController : MonoBehaviour {
 
 	void Update() {
 
+	}
+
+	public List<Edge> GetDemoEdges() {
+		int order = 4;
+		string input = @"0 1 0 4
+1 0 3 1
+0 3 0 2
+4 1 2 0";
+		List<Edge> edges = new List<Edge>();
+		foreach (int node in Enumerable.Range(0, order)) {
+			string[] line = input.Split('\n')[node].Trim().Split(' ');
+			foreach (int n in Enumerable.Range(0, line.Length)) {
+				if (int.Parse(line[n]) != 0) {
+					edges.Add(new Edge(int.Parse(line[n]), node, n));
+				}
+			}
+		}
+		return edges;
 	}
 }
