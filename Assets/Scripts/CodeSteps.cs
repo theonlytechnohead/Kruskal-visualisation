@@ -71,16 +71,38 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseQueue() {
 		queue = new PriorityQueue<Edge>();
-		next = FillQueue;
+		next = InitialiseForeachEdge;
 		return (int)state.initQueue;
 	}
 
-	// TODO: unpack this foreach loop into individual steps
-	public int FillQueue() {
-		foreach (var edge in edges) {
-			queue.Enqueue(edge);
+	int e;
+
+	public int InitialiseForeachEdge() {
+		e = 0;
+		return DoForeachEdge();
+	}
+
+	Edge graphEdge;
+
+	public int DoForeachEdge() {
+		graphEdge = edges[e];
+		next = EnqueueEdge;
+		return (int)state.edgeForeach;
+	}
+
+	public int EnqueueEdge() {
+		queue.Enqueue(graphEdge);
+		next = CheckForeachEdge;
+		return (int)state.enqueueEdge;
+	}
+
+	public int CheckForeachEdge() {
+		if (e < edges.Count - 1) {
+			e++;
+			next = DoForeachEdge;
+		} else {
+			next = InitialiseUsedEdges;
 		}
-		next = InitialiseUsedEdges;
 		return (int)state.endEdgeForeach;
 	}
 
