@@ -63,16 +63,12 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseCost() {
 		cost = 0;
-		next = CheckWhileCondition;
+		next = DoWhile;
 		return 0;
 	}
 
-	public int CheckWhileCondition() {
-		if (used_edges < order - 1) {
-			next = PeekEdge;
-		} else {
-			// move on to something else, update state?
-		}
+	public int DoWhile() {
+		next = PeekEdge;
 		return 0;
 	}
 
@@ -187,24 +183,65 @@ public class CodeSteps : MonoBehaviour {
 	public int CheckTwoTreesCondition() {
 		gotTwoTrees = tree1 != null && tree2 != null;
 		if (gotTwoTrees)
-			next = ApplyTwoTreesCondition;
+			next = JoinTrees;
 		else
-			next = null; // TODO: Check while condition
-		return 0;
-	}
-
-	public int ApplyTwoTreesCondition() {
-		if (gotTwoTrees) {
-			// move state somwhere, probably next
-		} else {
-			// move state elsewhere, skip next block
-		}
+			next = EndIf;
 		return 0;
 	}
 
 	public int JoinTrees() {
 		tree1.AddRange(tree2);
 		forestVisualizer.JoinTrees(tree1, tree2);
+		next = RemoveTree;
+		return 0;
+	}
+
+	public int RemoveTree() {
+		forest.Remove(tree2);
+		forestVisualizer.RemoveTree(tree2);
+		next = IncrementUsedEdges;
+		return 0;
+	}
+
+	public int IncrementUsedEdges() {
+		used_edges++;
+		next = PopEdge;
+		return 0;
+	}
+
+	public int PopEdge() {
+		queue.Dequeue();
+		next = UpdateCost;
+		return 0;
+	}
+
+	public int UpdateCost() {
+		cost += edge.priority;
+		next = EndIf;
+		return 0;
+	}
+
+	public int EndIf() {
+		next = CheckWhile;
+		return 0;
+	}
+
+	public int CheckWhile() {
+		if (used_edges < order - 1) {
+			next = DoWhile;
+		} else {
+			next = ReturnCost;
+		}
+		return 0;
+	}
+
+	public int ReturnCost() {
+		next = End;
+		return 0;
+	}
+
+	public int End() {
+		print("Reached end");
 		return 0;
 	}
 
