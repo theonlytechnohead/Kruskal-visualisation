@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class CodeSteps : MonoBehaviour {
 
+	public ForestVisualizer forestVisualizer;
+
 	// Function pointer for FSM
-	public Func<int> kruskalStep;
+	public Func<int> next;
 
 	int order;
 	List<Edge> edges;
@@ -24,6 +26,11 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseForest() {
 		forest = Enumerable.Range(0, order).ToList().ConvertAll(x => new List<int> { x });
+		// visualise forest
+		foreach (List<int> tree in forest) {
+			forestVisualizer.AddTree(tree);
+		}
+		next = InitialiseQueue;
 		return 0;
 	}
 
@@ -31,13 +38,16 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseQueue() {
 		queue = new PriorityQueue<Edge>();
+		next = FillQueue;
 		return 0;
 	}
 
+	// TODO: unpack this foreach loop into individual steps
 	public int FillQueue() {
 		foreach (var edge in edges) {
 			queue.Enqueue(edge);
 		}
+		next = InitialiseUsedEdges;
 		return 0;
 	}
 
@@ -45,6 +55,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseUsedEdges() {
 		used_edges = 0;
+		next = InitialiseCost;
 		return 0;
 	}
 
@@ -52,12 +63,13 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseCost() {
 		cost = 0;
+		next = CheckWhileCondition;
 		return 0;
 	}
 
 	public int CheckWhileCondition() {
 		if (used_edges < order - 1) {
-			// do something with state
+			next = PeekEdge;
 		} else {
 			// move on to something else, update state?
 		}
@@ -68,6 +80,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int PeekEdge() {
 		edge = queue.Peek();
+		next = InitialiseTree1;
 		return 0;
 	}
 
@@ -75,6 +88,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseTree1() {
 		tree1 = null;
+		next = InitialiseTree2;
 		return 0;
 	}
 
@@ -82,6 +96,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseTree2() {
 		tree2 = null;
+		next = InitialiseForeachLoop;
 		return 0;
 	}
 
@@ -89,18 +104,15 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseForeachLoop() {
 		i = 0;
+		next = DoForeach;
 		return 0;
 	}
 
 	List<int> tree;
 
 	public int DoForeach() {
-		if (i < forest.Count) {
-			tree = forest[i];
-			i++;
-		} else {
-			// move on to something else
-		}
+		tree = forest[i];
+		next = CheckTree1Condition;
 		return 0;
 	}
 
@@ -108,6 +120,10 @@ public class CodeSteps : MonoBehaviour {
 
 	public int CheckTree1Condition() {
 		foundTree1 = tree.Contains(edge.source) && !tree.Contains(edge.destination);
+		if (foundTree1)
+			next = ApplyTree1;
+		else
+			next = CheckTree2Condition;
 		return 0;
 	}
 
@@ -115,6 +131,7 @@ public class CodeSteps : MonoBehaviour {
 		if (foundTree1) {
 			tree1 = tree;
 		}
+		next = CheckTree2Condition;
 		return 0;
 	}
 
@@ -122,6 +139,10 @@ public class CodeSteps : MonoBehaviour {
 
 	public int CheckTree2Condition() {
 		foundTree2 = !tree.Contains(edge.source) && tree.Contains(edge.destination);
+		if (foundTree2)
+			next = ApplyTree2;
+		else
+			next = CheckSameStreeCondition;
 		return 0;
 	}
 
@@ -129,6 +150,7 @@ public class CodeSteps : MonoBehaviour {
 		if (foundTree2) {
 			tree2 = tree;
 		}
+		next = CheckSameStreeCondition;
 		return 0;
 	}
 
@@ -136,6 +158,10 @@ public class CodeSteps : MonoBehaviour {
 
 	public int CheckSameStreeCondition() {
 		inSameTree = tree.Contains(edge.source) && tree.Contains(edge.destination);
+		if (inSameTree)
+			next = ApplySameTree;
+		else
+			next = CheckForeach;
 		return 0;
 	}
 
@@ -143,6 +169,42 @@ public class CodeSteps : MonoBehaviour {
 		if (inSameTree) {
 			queue.Dequeue();
 		}
+		return 0;
+	}
+
+	public int CheckForeach() {
+		if (i < forest.Count) {
+			i++;
+			next = DoForeach;
+		} else {
+			next = CheckTwoTreesCondition;
+		}
+		return 0;
+	}
+
+	bool gotTwoTrees = false;
+
+	public int CheckTwoTreesCondition() {
+		gotTwoTrees = tree1 != null && tree2 != null;
+		if (gotTwoTrees)
+			next = ApplyTwoTreesCondition;
+		else
+			next = null; // TODO: Check while condition
+		return 0;
+	}
+
+	public int ApplyTwoTreesCondition() {
+		if (gotTwoTrees) {
+			// move state somwhere, probably next
+		} else {
+			// move state elsewhere, skip next block
+		}
+		return 0;
+	}
+
+	public int JoinTrees() {
+		tree1.AddRange(tree2);
+		forestVisualizer.JoinTrees(tree1, tree2);
 		return 0;
 	}
 

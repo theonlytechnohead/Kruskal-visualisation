@@ -769,10 +769,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pseudocode: {fileID: 1099711248}
   code: {fileID: 824342460}
-  forestVisualizer: {fileID: 876673318}
-  codeSteps: {fileID: 519420033}
-  pseudocodeState: -1
-  codeState: -1
+  steps: {fileID: 519420033}
+  pseudocodeState: 0
+  codeState: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -842,6 +841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90d89de6c47410a47afa0cab889e76a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forestVisualizer: {fileID: 876673318}
 --- !u!1 &824342458
 GameObject:
   m_ObjectHideFlags: 0
