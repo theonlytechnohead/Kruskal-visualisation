@@ -6,6 +6,7 @@ using UnityEngine;
 public class CodeSteps : MonoBehaviour {
 
 	public ForestVisualizer forestVisualizer;
+	public GraphVisualiser graphVisualiser;
 
 	// Function pointer for FSM
 	public Func<int> next;
@@ -50,10 +51,16 @@ public class CodeSteps : MonoBehaviour {
 
 	public void setOrder(int order) {
 		this.order = order;
+		for (int n = 0; n < order; n++) {
+			graphVisualiser.AddNode(n);
+		}
 	}
 
 	public void setEdges(List<Edge> edges) {
 		this.edges = edges;
+		foreach (Edge edge in edges) {
+			graphVisualiser.AddEdge(edge.source, edge.destination);
+		}
 	}
 
 	List<List<int>> forest;
@@ -63,6 +70,7 @@ public class CodeSteps : MonoBehaviour {
 		foreach (List<int> tree in forest) {
 			forestVisualizer.AddTree(tree);
 		}
+		graphVisualiser.DisplayGraph();
 		next = InitialiseQueue;
 		return (int)state.initForest;
 	}
@@ -131,6 +139,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int PeekEdge() {
 		edge = queue.Peek();
+		graphVisualiser.HighlightEdge(edge);
 		next = InitialiseTree1;
 		return (int)state.peekEdge;
 	}
@@ -266,6 +275,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int PopEdge() {
 		queue.Dequeue();
+		graphVisualiser.DimEdge(edge);
 		next = UpdateCost;
 		return (int)state.popEdge;
 	}

@@ -69,10 +69,14 @@ public class MainController : MonoBehaviour {
 
 	public List<Edge> GetDemoEdges() {
 		int order = 4;
+		//		string input = @"0 1 0 4
+		//1 0 3 1
+		//0 3 0 2
+		//4 1 2 0";
 		string input = @"0 1 0 4
-1 0 3 1
-0 3 0 2
-4 1 2 0";
+0 0 3 1
+0 0 0 2
+0 0 0 0";
 		List<Edge> edges = new List<Edge>();
 		foreach (int node in Enumerable.Range(0, order)) {
 			string[] line = input.Split('\n')[node].Trim().Split(' ');
