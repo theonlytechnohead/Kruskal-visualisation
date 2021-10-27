@@ -10,8 +10,9 @@ public class LineSelected : MonoBehaviour, IPointerExitHandler {
 	public GameObject popup;
 	public RectTransform canvasRect;
 
-	[SerializeField]
-	private List<string> descriptions;
+	private List<string> descriptions = new List<string> {
+		"This is the definition of the function, which specifies several key properties. <style=\"Code\">public</style> means that the function is publicly accessible by other code, whilst <style=\"Code\">static</style> ensures that it does not require instantiation to run. <style=\"Code\">int Kruskal</style> says that the function is called 'Kruskal,' and will return a single <style=\"Code\">integer</style> (number). <style=\"Code\">int order</style> is the first parameter it requires, specifying the order of the graph, and <style=\"Code\">List<Edge> edges</style> is naturally a list of the edges between the nodes in the graph."
+	};
 
 	TextMeshProUGUI textMesh;
 
