@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MainController : MonoBehaviour {
 
@@ -61,6 +62,7 @@ public class MainController : MonoBehaviour {
 		pseudocodeState = PseudocodeSteps.ProcessState(codeState);
 		setPseduocodeHighlight();
 		setCodeHighlight();
+		EventSystem.current.SetSelectedGameObject(null);
 	}
 
 	void Update() {

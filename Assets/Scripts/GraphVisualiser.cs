@@ -16,8 +16,8 @@ public class GraphVisualiser : MonoBehaviour {
 		network.Nodes.Add(new Node(Guid.NewGuid(), n.ToString(), Color.white));
 	}
 
-	public void AddEdge(int source, int destination) {
-		network.Links.Add(new Link(network.Nodes[source].Id, network.Nodes[destination].Id, 0.5f, Color.grey));
+	public void AddEdge(int source, int destination, int distance) {
+		network.Links.Add(new Link(network.Nodes[source].Id, network.Nodes[destination].Id, 0.5f - (0.1f * distance), Color.grey, distance));
 	}
 
 	public void HighlightEdge(Edge edge) {

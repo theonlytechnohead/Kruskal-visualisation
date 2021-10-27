@@ -59,7 +59,7 @@ public class CodeSteps : MonoBehaviour {
 	public void setEdges(List<Edge> edges) {
 		this.edges = edges;
 		foreach (Edge edge in edges) {
-			graphVisualiser.AddEdge(edge.source, edge.destination);
+			graphVisualiser.AddEdge(edge.source, edge.destination, edge.priority);
 		}
 	}
 

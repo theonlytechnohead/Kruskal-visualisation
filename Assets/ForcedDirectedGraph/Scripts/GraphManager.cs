@@ -18,7 +18,7 @@ namespace ForceDirectedGraph {
 		/// <summary>
 		/// The maximum distance for applying repulsion forces.
 		/// </summary>
-		private const float REPULSION_DISTANCE = 5f;
+		private const float REPULSION_DISTANCE = 4f;
 
 		/// <summary>
 		/// The attraction force between any two nodes.
@@ -146,7 +146,7 @@ namespace ForceDirectedGraph {
 			foreach (var node in Network?.Nodes) {
 				// Create a new entity instance
 				GameObject graphNode = Instantiate(NoteTemplate, NodesParent.transform);
-				graphNode.transform.position = Vector3.zero;
+				//graphNode.transform.position = Vector3.zero;
 				graphNode.transform.localRotation = Quaternion.Euler(Vector3.zero);
 
 				// Extract the script
@@ -266,16 +266,27 @@ namespace ForceDirectedGraph {
 		/// Computes the repulsive force against a node.
 		/// </summary>
 		private Vector2 ComputeRepulsiveForce(GraphNode node, GraphNode repulsiveNode) {
+			float repulseDistance = REPULSION_DISTANCE;
+			foreach (GraphLink link in GraphLinks) {
+				if (link.FirstNode == node && link.SecondNode == repulsiveNode) {
+					repulseDistance += link.Link.Distance * 0.35f;
+					break;
+				}
+				if (link.FirstNode == repulsiveNode && link.SecondNode == node) {
+					repulseDistance += link.Link.Distance * 0.35f;
+					break;
+				}
+			}
 			// Compute distance
 			float distance = ComputeDistance(node, repulsiveNode);
-			if (distance > REPULSION_DISTANCE)
+			if (distance > repulseDistance)
 				return Vector3.zero;
 
 			// Compute force direction
 			Vector2 forceDirection = (node.transform.position - repulsiveNode.transform.position).normalized;
 
 			// Compute distance force
-			float distanceForce = (REPULSION_DISTANCE - distance) / REPULSION_DISTANCE;
+			float distanceForce = (repulseDistance - distance) / repulseDistance;
 
 			// Compute repulsive force
 			return forceDirection * distanceForce * REPULSION_FORCE * Time.deltaTime;
