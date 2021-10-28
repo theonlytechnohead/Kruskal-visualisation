@@ -9,7 +9,7 @@ public class CodeSteps : MonoBehaviour {
 	public GraphVisualiser graphVisualiser;
 	public UsedEdgesVisualiser usedEdgesVisualiser;
 	public CostVisualiser costVisualiser;
-
+	public QueueVisualiser queueVisualiser;
 	public EdgeHolder edgeHolder;
 
 	// Function pointer for FSM
@@ -83,6 +83,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseQueue() {
 		queue = new PriorityQueue<Edge>();
+		queueVisualiser.InitialiseQueue();
 		next = InitialiseForeachEdge;
 		return (int)state.initQueue;
 	}
@@ -104,6 +105,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int EnqueueEdge() {
 		queue.Enqueue(graphEdge);
+		queueVisualiser.Enqueue(graphEdge);
 		next = CheckForeachEdge;
 		return (int)state.enqueueEdge;
 	}
@@ -284,6 +286,7 @@ public class CodeSteps : MonoBehaviour {
 	public int PopEdge() {
 		queue.Dequeue();
 		graphVisualiser.DimEdge(edge);
+		queueVisualiser.Dequeue();
 		next = UpdateCost;
 		return (int)state.popEdge;
 	}
@@ -315,6 +318,7 @@ public class CodeSteps : MonoBehaviour {
 	}
 
 	public int End() {
+		queueVisualiser.ClearQueue();
 		return (int)state.end;
 	}
 

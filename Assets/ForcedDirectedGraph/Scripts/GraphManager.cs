@@ -189,12 +189,14 @@ namespace ForceDirectedGraph {
 			}
 		}
 
-		public void SetLinkColour(Guid firstID, Guid secondID, Color newColour) {
+		public void SetLinkColour(Guid firstID, Guid secondID, Color linkColour, Color node1Colour, Color node2Colour) {
 			GraphNode firstNode = GraphNodes[firstID];
+			firstNode.SetNodeHighlighted(node1Colour);
 			GraphNode secondNode = GraphNodes[secondID];
+			secondNode.SetNodeHighlighted(node2Colour);
 			foreach (var link in GraphLinks) {
 				if (link.FirstNode == firstNode && link.SecondNode == secondNode) {
-					link.SetColour(newColour);
+					link.SetColour(linkColour);
 				}
 			}
 		}

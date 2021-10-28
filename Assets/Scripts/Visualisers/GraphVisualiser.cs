@@ -21,11 +21,11 @@ public class GraphVisualiser : MonoBehaviour {
 	}
 
 	public void HighlightEdge(Edge edge) {
-		Graph.SetLinkColour(network.Nodes[edge.source].Id, network.Nodes[edge.destination].Id, Color.blue);
+		Graph.SetLinkColour(network.Nodes[edge.source].Id, network.Nodes[edge.destination].Id, Color.blue, Color.cyan, Color.green);
 	}
 
 	public void DimEdge(Edge edge) {
-		Graph.SetLinkColour(network.Nodes[edge.source].Id, network.Nodes[edge.destination].Id, Color.black);
+		Graph.SetLinkColour(network.Nodes[edge.source].Id, network.Nodes[edge.destination].Id, Color.black, Color.white, Color.white);
 	}
 
 	public void DisplayGraph() {

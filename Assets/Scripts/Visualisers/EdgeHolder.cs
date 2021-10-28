@@ -17,7 +17,7 @@ public class EdgeHolder : MonoBehaviour {
 			edgeObject = null;
 		}
 		edgeObject = Instantiate(edgePrefab, transform);
-		edgeObject.GetComponent<EdgeVisualiser>().InitialiseEdge(edge);
+		edgeObject.GetComponent<EdgeVisualiser>().InitialiseEdge(edge, true);
 	}
 
 	void Update() {
