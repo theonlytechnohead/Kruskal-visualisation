@@ -56,8 +56,8 @@ public class PseudocodeSteps {
 			case CodeSteps.state.checkWhile:
 				return (int)state.foreachEdge;
 			case CodeSteps.state.returnCost:
-				return (int)state.returnSets;
 			case CodeSteps.state.end:
+				return (int)state.returnSets;
 			default:
 				return 0;
 		}
