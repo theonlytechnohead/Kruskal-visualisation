@@ -8,12 +8,12 @@ public class CostVisualiser : MonoBehaviour {
 	private int cost = 0;
 
 	void Start() {
-		gameObject.SetActive(false);
+		transform.parent.gameObject.SetActive(false);
 	}
 
 	public void InitialiseCost() {
 		cost = 0;
-		gameObject.SetActive(true);
+		transform.parent.gameObject.SetActive(true);
 	}
 
 	public void AddCost(int cost) {

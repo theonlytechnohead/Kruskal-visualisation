@@ -8,12 +8,12 @@ public class UsedEdgesVisualiser : MonoBehaviour {
 	private int used_edges = 0;
 
 	private void Start() {
-		gameObject.SetActive(false);
+		transform.parent.gameObject.SetActive(false);
 	}
 
 	public void InitialiseUsedEdges() {
 		used_edges = 0;
-		gameObject.SetActive(true);
+		transform.parent.gameObject.SetActive(true);
 	}
 
 	public void IncremendUsedEdges() {
