@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class CodeSteps : MonoBehaviour {
 
-	public ForestVisualizer forestVisualizer;
 	public GraphVisualiser graphVisualiser;
 	public UsedEdgesVisualiser usedEdgesVisualiser;
 	public CostVisualiser costVisualiser;
 	public QueueVisualiser queueVisualiser;
 	public EdgeHolder edgeHolder;
+	public TreeVisualiser treeVisualiser;
+	public ForestVisualizer forestVisualizer;
 
 	// Function pointer for FSM
 	public Func<int> next;
@@ -157,6 +158,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseTree1() {
 		tree1 = null;
+		treeVisualiser.InitialiseTree1();
 		next = InitialiseTree2;
 		return (int)state.initTree1;
 	}
@@ -165,6 +167,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseTree2() {
 		tree2 = null;
+		treeVisualiser.InitialiseTree2();
 		next = InitialiseForeachLoop;
 		return (int)state.initTree2;
 	}
@@ -180,6 +183,8 @@ public class CodeSteps : MonoBehaviour {
 
 	public int DoForeach() {
 		tree = forest[i];
+		treeVisualiser.InitialiseTree();
+		treeVisualiser.SetTree(tree);
 		next = CheckTree1Condition;
 		return (int)state.doForeach;
 	}
@@ -198,6 +203,7 @@ public class CodeSteps : MonoBehaviour {
 	public int ApplyTree1() {
 		if (foundTree1) {
 			tree1 = tree;
+			treeVisualiser.SetTree1(tree);
 		}
 		next = CheckTree2Condition;
 		return (int)state.applyTree1;
@@ -217,6 +223,7 @@ public class CodeSteps : MonoBehaviour {
 	public int ApplyTree2() {
 		if (foundTree2) {
 			tree2 = tree;
+			treeVisualiser.SetTree2(tree);
 		}
 		next = CheckSameStreeCondition;
 		return (int)state.applyTree2;
@@ -244,8 +251,10 @@ public class CodeSteps : MonoBehaviour {
 	public int CheckForeach() {
 		if (i < forest.Count - 1) {
 			i++;
+			treeVisualiser.ClearTree();
 			next = DoForeach;
 		} else {
+			treeVisualiser.DestroyTree();
 			next = CheckTwoTreesCondition;
 		}
 		return (int)state.endForeach;
@@ -304,6 +313,8 @@ public class CodeSteps : MonoBehaviour {
 	}
 
 	public int CheckWhile() {
+		treeVisualiser.DestroyTree1();
+		treeVisualiser.DestroyTree2();
 		if (used_edges < order - 1) {
 			next = DoWhile;
 		} else {
