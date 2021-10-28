@@ -10,6 +10,8 @@ public class CodeSteps : MonoBehaviour {
 	public UsedEdgesVisualiser usedEdgesVisualiser;
 	public CostVisualiser costVisualiser;
 
+	public EdgeHolder edgeHolder;
+
 	// Function pointer for FSM
 	public Func<int> next;
 
@@ -144,6 +146,7 @@ public class CodeSteps : MonoBehaviour {
 	public int PeekEdge() {
 		edge = queue.Peek();
 		graphVisualiser.HighlightEdge(edge);
+		edgeHolder.InitialiseEdgeHolder(edge);
 		next = InitialiseTree1;
 		return (int)state.peekEdge;
 	}
