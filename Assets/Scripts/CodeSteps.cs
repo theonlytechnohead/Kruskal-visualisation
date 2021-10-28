@@ -7,6 +7,8 @@ public class CodeSteps : MonoBehaviour {
 
 	public ForestVisualizer forestVisualizer;
 	public GraphVisualiser graphVisualiser;
+	public UsedEdgesVisualiser usedEdgesVisualiser;
+	public CostVisualiser costVisualiser;
 
 	// Function pointer for FSM
 	public Func<int> next;
@@ -118,6 +120,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseUsedEdges() {
 		used_edges = 0;
+		usedEdgesVisualiser.InitialiseUsedEdges();
 		next = InitialiseCost;
 		return (int)state.initUsedEdges;
 	}
@@ -126,6 +129,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int InitialiseCost() {
 		cost = 0;
+		costVisualiser.InitialiseCost();
 		next = DoWhile;
 		return (int)state.initCost;
 	}
@@ -269,6 +273,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int IncrementUsedEdges() {
 		used_edges++;
+		usedEdgesVisualiser.IncremendUsedEdges();
 		next = PopEdge;
 		return (int)state.incrementUsedEdges;
 	}
@@ -282,6 +287,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int UpdateCost() {
 		cost += edge.priority;
+		costVisualiser.AddCost(edge.priority);
 		next = EndIf;
 		return (int)state.updateCost;
 	}
