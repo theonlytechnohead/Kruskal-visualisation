@@ -20,6 +20,11 @@ public class EdgeHolder : MonoBehaviour {
 		edgeObject.GetComponent<EdgeVisualiser>().InitialiseEdge(edge, true);
 	}
 
+	public void DestroyEdgeHolder() {
+		Destroy(edgeObject);
+		edgeObject = null;
+	}
+
 	void Update() {
 
 	}

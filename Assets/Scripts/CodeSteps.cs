@@ -313,6 +313,7 @@ public class CodeSteps : MonoBehaviour {
 	}
 
 	public int CheckWhile() {
+		edgeHolder.DestroyEdgeHolder();
 		treeVisualiser.DestroyTree1();
 		treeVisualiser.DestroyTree2();
 		if (used_edges < order - 1) {
