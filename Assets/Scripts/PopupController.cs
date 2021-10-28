@@ -4,13 +4,85 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class LineSelected : MonoBehaviour, IPointerExitHandler {
+public class PopupController : MonoBehaviour {
 
-	public GameObject popup;
-	public RectTransform canvasRect;
+	public GameObject codePopup;
+	public GameObject pseudocodePopup;
+	RectTransform canvasRect;
 
-	private List<string> descriptions = new List<string> {
+	public TextMeshProUGUI codeText;
+	int codeIndex;
+	public TextMeshProUGUI pseudocodeText;
+	int pseudocodeIndex;
+
+	void Start() {
+		canvasRect = GetComponent<RectTransform>();
+		codePopup.SetActive(false);
+		pseudocodePopup.SetActive(false);
+
+	}
+
+	public void CodeInfoSelection(int lineIndex, TMP_LineInfo lineInfo) {
+		codeIndex = lineIndex;
+		float lineY = (codeText.rectTransform.rect.height + 5f) - lineInfo.lineExtents.min.y;
+		codePopup.SetActive(true);
+		pseudocodePopup.SetActive(false);
+		Vector3 pos = codePopup.GetComponent<RectTransform>().anchoredPosition;
+		pos.y = -lineY;
+		codePopup.GetComponent<RectTransform>().anchoredPosition = pos;
+	}
+
+	public void PseudocodeInfoSelection(int lineIndex, TMP_LineInfo lineInfo) {
+		pseudocodeIndex = lineIndex;
+		float lineY = (pseudocodeText.rectTransform.rect.yMax + 5f) + lineInfo.lineExtents.min.y + lineInfo.lineHeight;
+		pseudocodePopup.SetActive(true);
+		codePopup.SetActive(false);
+		Vector3 pos = codePopup.GetComponent<RectTransform>().anchoredPosition;
+		pos.y = lineY;
+		pseudocodePopup.GetComponent<RectTransform>().anchoredPosition = pos;
+	}
+
+	void Update() {
+		if (codePopup.activeSelf) {
+			Vector3 pos = codePopup.GetComponent<RectTransform>().anchoredPosition;
+			Vector2 canvasSpaceMouse;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, null, out canvasSpaceMouse);
+			pos.x = canvasSpaceMouse.x + (canvasRect.rect.width / 2);
+			codePopup.GetComponent<RectTransform>().anchoredPosition = pos;
+			UpdatePopupDescription();
+		}
+		if (pseudocodePopup.activeSelf) {
+			Vector3 pos = pseudocodePopup.GetComponent<RectTransform>().anchoredPosition;
+			Vector2 canvasSpaceMouse;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, null, out canvasSpaceMouse);
+			pos.x = canvasSpaceMouse.x + (canvasRect.rect.width / 2);
+			pseudocodePopup.GetComponent<RectTransform>().anchoredPosition = pos;
+			UpdatePseudocodePopupDescription();
+		}
+	}
+
+	void UpdatePopupDescription() {
+		if (codeIndex < codeDescriptions.Count) {
+			codePopup.GetComponentInChildren<TextMeshProUGUI>().text = codeDescriptions[codeIndex];
+		} else {
+			codePopup.GetComponentInChildren<TextMeshProUGUI>().text = "No description";
+		}
+	}
+
+	void UpdatePseudocodePopupDescription() {
+		if (pseudocodeIndex < pseudocodeDescriptions.Count) {
+			pseudocodePopup.GetComponentInChildren<TextMeshProUGUI>().text = pseudocodeDescriptions[pseudocodeIndex];
+		} else {
+			pseudocodePopup.GetComponentInChildren<TextMeshProUGUI>().text = "No description";
+		}
+	}
+
+	public void OnPointerExit(PointerEventData eventData) {
+		codePopup.SetActive(false);
+		pseudocodePopup.SetActive(false);
+	}
+
+	private List<string> codeDescriptions = new List<string> {
 		"This is the definition of the function, which specifies several key properties. <style=\"Code\">public</style> means that the function is publicly accessible by other code, whilst <style=\"Code\">static</style> ensures that it does not require instantiation to run. <style=\"Code\">int Kruskal</style> says that the function is called 'Kruskal,' and will return a single <style=\"Code\">integer</style> (number). <style=\"Code\">int order</style> is the first parameter it requires, specifying the order of the graph, and <style=\"Code\">List<Edge> edges</style> is naturally a list of the edges between the nodes in the graph.",
 		"This tricky line is much easier understood in Python code. It's not very important to understand, as it can be much better visualised instead. It constructs a list of lists, each of which holds a single node.",
 		"This queue holds all the edges of the graph, which we need for later. As this is a priority queue, it will create and maintain a sorted order, from least to most by edge distance.",
@@ -43,45 +115,15 @@ public class LineSelected : MonoBehaviour, IPointerExitHandler {
 		"It's all done now!"
 	};
 
-	TextMeshProUGUI textMesh;
-
-	int currentIndex;
-
-	private void Start() {
-		textMesh = GetComponent<TextMeshProUGUI>();
-		popup.SetActive(false);
-	}
-
-	public void LineInfoSelection(int lineIndex, TMP_LineInfo lineInfo) {
-		currentIndex = lineIndex;
-		float lineY = (textMesh.rectTransform.rect.height + 5f) - lineInfo.lineExtents.min.y;
-		popup.SetActive(true);
-		Vector3 pos = popup.GetComponent<RectTransform>().anchoredPosition;
-		pos.y = -lineY;
-		popup.GetComponent<RectTransform>().anchoredPosition = pos;
-	}
-
-	public void Update() {
-		// sets popup X pos
-		if (popup.activeSelf) {
-			Vector3 pos = popup.GetComponent<RectTransform>().anchoredPosition;
-			Vector2 canvasSpaceMouse;
-			RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, null, out canvasSpaceMouse);
-			pos.x = canvasSpaceMouse.x + (canvasRect.rect.width / 2);
-			popup.GetComponent<RectTransform>().anchoredPosition = pos;
-			UpdatePopupDescription();
-		}
-	}
-
-	void UpdatePopupDescription() {
-		if (currentIndex < descriptions.Count) {
-			popup.GetComponentInChildren<TextMeshProUGUI>().text = descriptions[currentIndex];
-		} else {
-			popup.GetComponentInChildren<TextMeshProUGUI>().text = "No description";
-		}
-	}
-
-	public void OnPointerExit(PointerEventData eventData) {
-		popup.SetActive(false);
-	}
+	private List<string> pseudocodeDescriptions = new List<string> {
+		"The first line defines this as a <style=\"Code\">function</style>, named <style=\"Code\">Kruskal</style>. It will require a weighted digraph, called <style=\"Code\">G</style>, and and the costs (weights) for each edge, called <style=\"Code\">c</style>.",
+		"Our 'search forest' is of the <style=\"Code\">disjointed sets</style> Abstract Data Type, which is a fancy way of saying a list of lists, which holds the nodes in the graph.",
+		"To start with, we'll put each node into a separate list, henceforth 'tree', and store the individual lists in a big list, called <style=\"Code\">A</style>.",
+		"This one should be pretty self-explanatory. We're just ordering all the edges in the graph from shortest to longest, for the next step.",
+		"Now we'll grab each edge, starting smallest and getting larger, and do some stuff with it. Actually, we'll do stuff with the two nodes that it connects, <style=\"Code\">u</style> and <style=\"Code\">v</style>.",
+		"Going back to our list-of-lists search forest, we check to see if node <style=\"Code\">u</style> and node <style=\"Code\">v</style> are in different trees.",
+		"<style=\"Code\">u</style> and <style=\"Code\">v</style> are in different trees, so we will note this edge down as being the shortest way between the two nodes.",
+		"And to finish off, we'll merge the two trees so that <style=\"Code\">u</style> and <style=\"Code\">v</style> are now in the same tree.",
+		"Once we've gone through all the edges, we're done! And we can return the final, shortest-path tree with all the nodes in the graph."
+	};
 }
