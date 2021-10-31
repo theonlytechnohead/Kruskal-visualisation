@@ -2039,7 +2039,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1271329897}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -2618,8 +2618,8 @@ RectTransform:
   - {fileID: 1938632920}
   - {fileID: 1109793215}
   - {fileID: 1467292468}
-  - {fileID: 1324164297}
   - {fileID: 1052536847}
+  - {fileID: 1324164297}
   - {fileID: 1905027579}
   m_Father: {fileID: 1365158572}
   m_RootOrder: 7
@@ -2693,6 +2693,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1324164297}
+  - component: {fileID: 1324164298}
   m_Layer: 5
   m_Name: tree1Holder
   m_TagString: Untagged
@@ -2712,13 +2713,29 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1271329897}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 10, y: 5}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0, y: 0}
+--- !u!111 &1324164298
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324164296}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1d2aabb2bbe662e4f8ef615a6b742ff8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1d2aabb2bbe662e4f8ef615a6b742ff8, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1365158568
 GameObject:
   m_ObjectHideFlags: 0
@@ -3475,6 +3492,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1905027579}
+  - component: {fileID: 1905027580}
   m_Layer: 5
   m_Name: tree2Holder
   m_TagString: Untagged
@@ -3501,6 +3519,22 @@ RectTransform:
   m_AnchoredPosition: {x: -10, y: 5}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 1, y: 0}
+--- !u!111 &1905027580
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905027578}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 9d2f8ae848108d7469855d33125c9914, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 9d2f8ae848108d7469855d33125c9914, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1938632919
 GameObject:
   m_ObjectHideFlags: 0

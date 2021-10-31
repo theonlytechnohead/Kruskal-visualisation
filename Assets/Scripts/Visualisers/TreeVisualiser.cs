@@ -16,11 +16,16 @@ public class TreeVisualiser : MonoBehaviour {
 	GameObject tree;
 	GameObject tree2;
 
+	Animation tree1Animator;
+	Animation tree2Animator;
+
 	void Start() {
 		gameObject.SetActive(false);
 		transform.GetChild(0).gameObject.SetActive(false);
 		transform.GetChild(1).gameObject.SetActive(false);
 		transform.GetChild(2).gameObject.SetActive(false);
+		tree1Animator = tree1Holder.gameObject.GetComponent<Animation>();
+		tree2Animator = tree2Holder.gameObject.GetComponent<Animation>();
 	}
 
 	void AddToTree(GameObject treeObject, int n) {
@@ -36,6 +41,7 @@ public class TreeVisualiser : MonoBehaviour {
 		t.GetComponent<RectTransform>().anchorMax = new Vector2(1, 1);
 		t.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 		t.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
+		parent.gameObject.SetActive(false);
 		return t;
 	}
 
@@ -67,18 +73,23 @@ public class TreeVisualiser : MonoBehaviour {
 		foreach (int n in nodes) {
 			AddToTree(tree1, n);
 		}
+		tree1Holder.gameObject.SetActive(true);
+		tree1Animator.Play();
 	}
 
 	public void SetTree(List<int> nodes) {
 		foreach (int n in nodes) {
 			AddToTree(tree, n);
 		}
+		treeHolder.gameObject.SetActive(true);
 	}
 
 	public void SetTree2(List<int> nodes) {
 		foreach (int n in nodes) {
 			AddToTree(tree2, n);
 		}
+		tree2Holder.gameObject.SetActive(true);
+		tree2Animator.Play();
 	}
 
 	public void ClearTree1() {
