@@ -2816,8 +2816,8 @@ RectTransform:
   - {fileID: 1800895678}
   - {fileID: 696907873}
   - {fileID: 953414048}
-  - {fileID: 1428849642}
   - {fileID: 1832419805}
+  - {fileID: 1428849642}
   - {fileID: 1271329897}
   - {fileID: 876673316}
   - {fileID: 312028177}
@@ -2922,6 +2922,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1428849642}
   - component: {fileID: 1428849643}
+  - component: {fileID: 1428849644}
   m_Layer: 5
   m_Name: EdgeHolder
   m_TagString: Untagged
@@ -2941,7 +2942,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1365158572}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2961,6 +2962,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   edgePrefab: {fileID: 8010300777172400629, guid: fa8ff623174e9dd46a24eac127e55eb8, type: 3}
+--- !u!111 &1428849644
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428849641}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 3e9f6f3419e195b4fa66957af2110dce, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 3e9f6f3419e195b4fa66957af2110dce, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &1444406060 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7088252788271906701, guid: 89b830a749202dc4aa5e37d07fe37bdd, type: 3}
@@ -3351,7 +3368,7 @@ RectTransform:
   - {fileID: 928624021}
   - {fileID: 11732006}
   m_Father: {fileID: 1365158572}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}

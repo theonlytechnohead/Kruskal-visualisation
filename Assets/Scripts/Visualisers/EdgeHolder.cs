@@ -7,8 +7,10 @@ public class EdgeHolder : MonoBehaviour {
 	public GameObject edgePrefab;
 	private GameObject edgeObject;
 
-	void Start() {
+	Animation animations;
 
+	void Start() {
+		animations = GetComponent<Animation>();
 	}
 
 	public void InitialiseEdgeHolder(Edge edge) {
@@ -18,6 +20,7 @@ public class EdgeHolder : MonoBehaviour {
 		}
 		edgeObject = Instantiate(edgePrefab, transform);
 		edgeObject.GetComponent<EdgeVisualiser>().InitialiseEdge(edge, true);
+		animations.Play();
 	}
 
 	public void DestroyEdgeHolder() {
