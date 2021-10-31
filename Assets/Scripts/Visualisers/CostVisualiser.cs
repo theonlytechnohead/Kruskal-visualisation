@@ -14,6 +14,7 @@ public class CostVisualiser : MonoBehaviour {
 	public void InitialiseCost() {
 		cost = 0;
 		transform.parent.gameObject.SetActive(true);
+		transform.GetComponentInParent<Animation>().Play();
 	}
 
 	public void AddCost(int cost) {

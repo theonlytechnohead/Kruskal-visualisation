@@ -14,6 +14,7 @@ public class UsedEdgesVisualiser : MonoBehaviour {
 	public void InitialiseUsedEdges() {
 		used_edges = 0;
 		transform.parent.gameObject.SetActive(true);
+		transform.GetComponentInParent<Animation>().Play();
 	}
 
 	public void IncremendUsedEdges() {

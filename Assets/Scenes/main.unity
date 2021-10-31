@@ -1090,6 +1090,7 @@ GameObject:
   - component: {fileID: 696907873}
   - component: {fileID: 696907875}
   - component: {fileID: 696907874}
+  - component: {fileID: 696907876}
   m_Layer: 5
   m_Name: UsedEdges
   m_TagString: Untagged
@@ -1155,6 +1156,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696907872}
   m_CullTransparentMesh: 1
+--- !u!111 &696907876
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696907872}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 783421381c99f9b4887d9ade3b77a13c, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 783421381c99f9b4887d9ade3b77a13c, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1001 &759460112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1946,6 +1963,7 @@ GameObject:
   - component: {fileID: 953414048}
   - component: {fileID: 953414050}
   - component: {fileID: 953414049}
+  - component: {fileID: 953414051}
   m_Layer: 5
   m_Name: Cost
   m_TagString: Untagged
@@ -2011,6 +2029,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 953414047}
   m_CullTransparentMesh: 1
+--- !u!111 &953414051
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953414047}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: b14b3334fefcde742a9be833f5b407dd, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: b14b3334fefcde742a9be833f5b407dd, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1052536846
 GameObject:
   m_ObjectHideFlags: 0
