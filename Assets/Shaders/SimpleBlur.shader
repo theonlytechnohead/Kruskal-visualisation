@@ -51,7 +51,7 @@ Shader "UI/Blur/UIBlur" {
 		  SubShader {
 
 			GrabPass {
-				// "_GrabTexture" // Uncomment to speed-up, see documentation.
+				"_GrabTexture" // Uncomment to speed-up, see documentation.
 				Tags { "LightMode" = "Always" }
 			  }
 

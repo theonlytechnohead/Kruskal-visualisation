@@ -76,6 +76,9 @@ public class CodeSteps : MonoBehaviour {
 			forestVisualizer.AddTree(tree);
 		}
 		graphVisualiser.DisplayGraph();
+		foreach (Transform tree in forestVisualizer.gameObject.transform) {
+			tree.gameObject.AddComponent<Flash>();
+		}
 		next = InitialiseQueue;
 		return (int)state.initForest;
 	}
@@ -85,6 +88,7 @@ public class CodeSteps : MonoBehaviour {
 	public int InitialiseQueue() {
 		queue = new PriorityQueue<Edge>();
 		queueVisualiser.InitialiseQueue();
+		queueVisualiser.gameObject.AddComponent<Flash>();
 		next = InitialiseForeachEdge;
 		return (int)state.initQueue;
 	}
@@ -107,6 +111,7 @@ public class CodeSteps : MonoBehaviour {
 	public int EnqueueEdge() {
 		queue.Enqueue(graphEdge);
 		queueVisualiser.Enqueue(graphEdge);
+		queueVisualiser.transform.GetChild(1).GetChild(e).gameObject.AddComponent<Flash>();
 		next = CheckForeachEdge;
 		return (int)state.enqueueEdge;
 	}
@@ -141,6 +146,7 @@ public class CodeSteps : MonoBehaviour {
 
 	public int DoWhile() {
 		next = PeekEdge;
+		usedEdgesVisualiser.transform.parent.gameObject.AddComponent<Flash>();
 		return (int)state.doWhile;
 	}
 
@@ -150,6 +156,7 @@ public class CodeSteps : MonoBehaviour {
 		edge = queue.Peek();
 		graphVisualiser.HighlightEdge(edge);
 		edgeHolder.InitialiseEdgeHolder(edge);
+		queueVisualiser.transform.GetChild(1).GetChild(0).gameObject.AddComponent<Flash>();
 		next = InitialiseTree1;
 		return (int)state.peekEdge;
 	}
@@ -184,7 +191,8 @@ public class CodeSteps : MonoBehaviour {
 	public int DoForeach() {
 		tree = forest[i];
 		treeVisualiser.InitialiseTree();
-		treeVisualiser.SetTree(tree);
+		treeVisualiser.SetTree(tree, edge);
+        treeVisualiser.transform.GetChild(3).GetChild(0).gameObject.AddComponent<Flash>();
 		next = CheckTree1Condition;
 		return (int)state.doForeach;
 	}
@@ -203,7 +211,8 @@ public class CodeSteps : MonoBehaviour {
 	public int ApplyTree1() {
 		if (foundTree1) {
 			tree1 = tree;
-			treeVisualiser.SetTree1(tree);
+			treeVisualiser.SetTree1(tree, edge);
+			treeVisualiser.transform.GetChild(4).GetChild(0).gameObject.AddComponent<Flash>();
 		}
 		next = CheckTree2Condition;
 		return (int)state.applyTree1;
@@ -223,7 +232,8 @@ public class CodeSteps : MonoBehaviour {
 	public int ApplyTree2() {
 		if (foundTree2) {
 			tree2 = tree;
-			treeVisualiser.SetTree2(tree);
+			treeVisualiser.SetTree2(tree, edge);
+			treeVisualiser.transform.GetChild(5).GetChild(0).gameObject.AddComponent<Flash>();
 		}
 		next = CheckSameStreeCondition;
 		return (int)state.applyTree2;
@@ -288,6 +298,7 @@ public class CodeSteps : MonoBehaviour {
 	public int IncrementUsedEdges() {
 		used_edges++;
 		usedEdgesVisualiser.IncremendUsedEdges();
+		usedEdgesVisualiser.transform.parent.gameObject.AddComponent<Flash>();
 		next = PopEdge;
 		return (int)state.incrementUsedEdges;
 	}
@@ -303,6 +314,7 @@ public class CodeSteps : MonoBehaviour {
 	public int UpdateCost() {
 		cost += edge.priority;
 		costVisualiser.AddCost(edge.priority);
+		costVisualiser.transform.parent.gameObject.AddComponent<Flash>();
 		next = EndIf;
 		return (int)state.updateCost;
 	}

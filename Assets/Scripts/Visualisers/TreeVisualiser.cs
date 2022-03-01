@@ -28,10 +28,17 @@ public class TreeVisualiser : MonoBehaviour {
 		tree2Animator = tree2Holder.gameObject.GetComponent<Animation>();
 	}
 
-	void AddToTree(GameObject treeObject, int n) {
+	void AddToTree(GameObject treeObject, int n, Edge edge) {
+		Color colour = Color.white;
+		if (n == edge.source) {
+			colour = Color.cyan;
+		} else if (n == edge.destination) {
+			colour = Color.green;
+		}
 		var node = Instantiate(NodePrefab, treeObject.transform);
 		treeObject.GetComponent<TreeGridManager>().AdjustCellSize(200);
-		node.GetComponent<TextMeshProUGUI>().text = n.ToString();
+		string text = $"<color=#{ColorUtility.ToHtmlStringRGB(colour)}>{n}</color>";
+		node.GetComponent<TextMeshProUGUI>().text = text;
 	}
 
 	public GameObject InstantiateTree(RectTransform parent) {
@@ -69,24 +76,24 @@ public class TreeVisualiser : MonoBehaviour {
 		transform.GetChild(2).gameObject.SetActive(true);
 	}
 
-	public void SetTree1(List<int> nodes) {
+	public void SetTree1(List<int> nodes, Edge edge) {
 		foreach (int n in nodes) {
-			AddToTree(tree1, n);
+			AddToTree(tree1, n, edge);
 		}
 		tree1Holder.gameObject.SetActive(true);
 		tree1Animator.Play();
 	}
 
-	public void SetTree(List<int> nodes) {
+	public void SetTree(List<int> nodes, Edge edge) {
 		foreach (int n in nodes) {
-			AddToTree(tree, n);
+			AddToTree(tree, n, edge);
 		}
 		treeHolder.gameObject.SetActive(true);
 	}
 
-	public void SetTree2(List<int> nodes) {
+	public void SetTree2(List<int> nodes, Edge edge) {
 		foreach (int n in nodes) {
-			AddToTree(tree2, n);
+			AddToTree(tree2, n, edge);
 		}
 		tree2Holder.gameObject.SetActive(true);
 		tree2Animator.Play();
