@@ -76,9 +76,6 @@ public class CodeSteps : MonoBehaviour {
 			forestVisualizer.AddTree(tree);
 		}
 		graphVisualiser.DisplayGraph();
-		foreach (Transform tree in forestVisualizer.gameObject.transform) {
-			tree.gameObject.AddComponent<Flash>();
-		}
 		next = InitialiseQueue;
 		return (int)state.initForest;
 	}

@@ -50,6 +50,7 @@ public class ForestVisualizer : MonoBehaviour {
 		var node = Instantiate(NodePrefab, tree.transform);
 		AdjustTreeSizes(GetComponent<GridLayoutGroup>().cellSize.x);
 		node.GetComponent<TextMeshProUGUI>().text = n.ToString();
+		tree.AddComponent<Flash>();
 	}
 
 	public void AddTree(List<int> nodes) {
@@ -63,10 +64,11 @@ public class ForestVisualizer : MonoBehaviour {
 	public void RemoveTree(List<int> nodes) {
 		int index = FindTree(nodes);
 		if (index != -1) {
+			transform.GetChild(index).gameObject.AddComponent<WidthDestroy>();
 			AdjustCellSize(transform.childCount - 1);
-			Destroy(transform.GetChild(index).gameObject);
-			AdjustTreeSizes(GetComponent<GridLayoutGroup>().cellSize.x);
-		}
+            //Destroy(transform.GetChild(index).gameObject);
+            AdjustTreeSizes(GetComponent<GridLayoutGroup>().cellSize.x);
+        }
 	}
 
 	public void JoinTrees(List<int> tree1, List<int> tree2) {
