@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Flash : MonoBehaviour {
 
-    Color startColour;
+    static Color? startColour = null;
     Material startMaterial;
     public Material flashMaterial;
     Image image;
@@ -15,12 +15,14 @@ public class Flash : MonoBehaviour {
     // Start is called before the first frame update
     void Start () {
         image = GetComponent<Image>();
-        startColour = image.material.GetColor("_TintColor");
+        if (startColour == null) {
+            startColour = image.material.GetColor("_TintColor");
+        }
         startMaterial = image.material;
         flashMaterial = new Material(startMaterial);
         flashMaterial.name = "FlashBlur";
         image.material = flashMaterial;
-        Color flashColour = startColour;
+        Color flashColour = startColour.Value;
         flashColour.a = 0.8f;
         image.material.SetColor("_TintColor", flashColour);
         //print(image.material.GetColor("_TintColor"));
@@ -32,11 +34,18 @@ public class Flash : MonoBehaviour {
             progress += 0.01f * Time.deltaTime;
             //print(progress);
         } else {
+            image.material.SetColor("_TintColor", startColour.Value);
             image.material = startMaterial;
+            //image.material.SetColor("_TintColor", startColour);
             Destroy(this);
         }
-        Color newColour = Color.Lerp(image.material.GetColor("_TintColor"), startColour, progress);
+        Color newColour = Color.Lerp(image.material.GetColor("_TintColor"), startColour.Value, progress);
         image.material.SetColor("_TintColor", newColour);
         //print(image.material.GetColor("_TintColor"));
+    }
+
+    void OnDestroy () {
+        image.material.SetColor("_TintColor", startColour.Value);
+        image.material = startMaterial;
     }
 }
