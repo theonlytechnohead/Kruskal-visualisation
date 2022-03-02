@@ -41,7 +41,7 @@ public class CodeTutorial : MonoBehaviour {
         "Suppose you have a bunch of different places you want to get to, all different distances from each other, and you want to get to all of them via the shortest distance. How could you work it out?",
         "You could calculate every possible combination of orders of visiting them, but that quickly gets really complicated to do. Surely there mut be a better way...",
         "And there is! It's called Kruskal's algorithm, check it out right here (hover over a line to see a description)",
-        "A much more detailed breakdown (in C# code) is also up here",
+        "A much more detailed breakdown (in C# code) is also up here - don't forget to hover over it to read more",
         "Have fun!"
     };
 
@@ -120,6 +120,7 @@ public class CodeTutorial : MonoBehaviour {
                 break;
             case states.fadeBack:
                 nextPanel.transform.GetChild(0).GetComponent<Button>().onClick.RemoveAllListeners();
+                nextPanel.transform.GetChild(0).GetComponent<Button>().interactable = false;
                 break;
             case states.main:
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
