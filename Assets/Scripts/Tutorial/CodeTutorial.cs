@@ -92,11 +92,11 @@ public class CodeTutorial : MonoBehaviour {
             tutorialPanel.GetComponent<RectTransform>().anchoredPosition = tutorialPosition;
         }
         if (state == states.fadeBack) {
-            GetComponent<Camera>().backgroundColor = Color.Lerp(GetComponent<Camera>().backgroundColor, background, Time.deltaTime);
+            GetComponent<Camera>().backgroundColor = Color.Lerp(GetComponent<Camera>().backgroundColor, background, 2f * Time.deltaTime);
             Vector2 tutorialPosition = tutorialPanel.GetComponent<RectTransform>().anchoredPosition;
             tutorialPosition.x = Mathf.Lerp(tutorialPosition.x, canvas.referenceResolution.x * 1.25f, Time.deltaTime);
             tutorialPanel.GetComponent<RectTransform>().anchoredPosition = tutorialPosition;
-            if (Mathf.Abs(background.a - GetComponent<Camera>().backgroundColor.a) < 0.005f) {
+            if (Mathf.Abs(background.a - GetComponent<Camera>().backgroundColor.a) < 0.01f) {
                 State();
             }
         }

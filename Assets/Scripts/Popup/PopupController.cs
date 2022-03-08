@@ -15,6 +15,9 @@ public class PopupController : MonoBehaviour {
 	public TextMeshProUGUI pseudocodeText;
 	int pseudocodeIndex;
 
+	private string highlightStart = "<mark=#adad0033>";
+	private string highlightEnd = "</mark>";
+
 	void Start() {
 		canvasRect = GetComponent<RectTransform>();
 		codePopup.SetActive(false);
@@ -30,6 +33,28 @@ public class PopupController : MonoBehaviour {
 		Vector3 pos = codePopup.GetComponent<RectTransform>().anchoredPosition;
 		pos.y = -lineY;
 		codePopup.GetComponent<RectTransform>().anchoredPosition = pos;
+
+		unsetCodeHighlight();
+		setCodeHighlight(lineIndex);
+	}
+
+	void setCodeHighlight (int lineIndex) {
+		string[] text = codeText.text.Split('\n');
+		if (text[lineIndex].Contains(highlightEnd)) { return; }
+		int tabs = text[lineIndex].Split('\t').Length - 1;
+		text[lineIndex] = new string('\t', tabs) + highlightStart + text[lineIndex].Trim() + highlightEnd;
+		codeText.text = string.Join("\n", text);
+	}
+
+	void unsetCodeHighlight () {
+		string[] text = codeText.text.Split('\n');
+		for (int i = 0; i < text.Length; i++) {
+			if (text[i].Contains(highlightStart)) {
+				text[i] = text[i].Replace(highlightStart, "");
+				text[i] = text[i].Replace(highlightEnd, "");
+			}
+		}
+		codeText.text = string.Join("\n", text);
 	}
 
 	public void PseudocodeInfoSelection(int lineIndex, TMP_LineInfo lineInfo) {
@@ -40,6 +65,28 @@ public class PopupController : MonoBehaviour {
 		Vector3 pos = codePopup.GetComponent<RectTransform>().anchoredPosition;
 		pos.y = lineY;
 		pseudocodePopup.GetComponent<RectTransform>().anchoredPosition = pos;
+
+		unsetPseudocodeHighlight();
+		setPseudocodeHighlight(lineIndex);
+	}
+
+	void setPseudocodeHighlight (int lineIndex) {
+		string[] text = pseudocodeText.text.Split('\n');
+		if (text[lineIndex].Contains(highlightEnd)) { return; }
+		int tabs = text[lineIndex].Split('\t').Length - 1;
+		text[lineIndex] = new string('\t', tabs) + highlightStart + text[lineIndex].Trim() + highlightEnd;
+		pseudocodeText.text = string.Join("\n", text);
+	}
+
+	void unsetPseudocodeHighlight () {
+		string[] text = pseudocodeText.text.Split('\n');
+		for (int i = 0; i < text.Length; i++) {
+			if (text[i].Contains(highlightStart)) {
+				text[i] = text[i].Replace(highlightStart, "");
+				text[i] = text[i].Replace(highlightEnd, "");
+			}
+		}
+		pseudocodeText.text = string.Join("\n", text);
 	}
 
 	void Update() {
@@ -79,7 +126,9 @@ public class PopupController : MonoBehaviour {
 
 	public void OnPointerExit(PointerEventData eventData) {
 		codePopup.SetActive(false);
+		unsetCodeHighlight();
 		pseudocodePopup.SetActive(false);
+		unsetPseudocodeHighlight();
 	}
 
 	private List<string> codeDescriptions = new List<string> {
