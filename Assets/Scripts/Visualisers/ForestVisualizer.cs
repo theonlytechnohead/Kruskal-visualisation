@@ -137,6 +137,7 @@ public class ForestVisualizer : MonoBehaviour {
                 toDelete.AddComponent<WidthDestroy>();
                 toDelete.GetComponent<WidthDestroy>().Anchor(index <= forestLeft.childCount);
             }
+            toMove.Reverse();
             if (toMove.Count > 0) {
                 foreach (Transform child in toMove) {
                     child.SetParent(forestRight, false);
@@ -150,6 +151,7 @@ public class ForestVisualizer : MonoBehaviour {
         foreach (Transform child in forestRight) {
             toMove.Add(child);
         }
+        toMove.Reverse();
         if (toMove.Count > 0) {
             foreach (Transform child in toMove) {
                 child.SetParent(forestLeft, false);
